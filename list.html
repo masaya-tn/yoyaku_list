@@ -9,11 +9,21 @@
     <p>入力した文章をAWS Lambdaで処理します。Outputに処理した結果が表示されます。</p>
     <section>
         <h2>一覧表示</h2>
-        <input type="submit" value="一覧" onclick="send_message();">
+        <button id = "btn">表示</button>
         <script src="my_util.js"></script>
         <p id="output_label"></p>
     </section>
     <script>
+      // window.addEventListener('DOMContentLoaded', ()=>{
+      //   send_message();
+      // });
+
+      var btn = document.getElementById('btn');
+
+      btn.addEventListener('click', ()=>{
+        send_message();
+      });
+
       const send_message = () => {
         // URLを作成
         // let input_label = document.getElementById("input_textfield");
@@ -22,26 +32,34 @@
         // parameter = encodeURI(parameter);
         // console.log(parameter);
 
-        request_url = "https://3fendtwomj.execute-api.ap-northeast-1.amazonaws.com/prod/testappapi?param1=";   
-        // request_url = request_url + parameter;
-        console.log(request_url);
+      //   request_url = "https://3fendtwomj.execute-api.ap-northeast-1.amazonaws.com/prod/testappapi?param1=";   
+      //   // request_url = request_url + parameter;
+      //   console.log(request_url);
 
-        // リクエストオブジェクトの作成
-        var request = new XMLHttpRequest();
-        request.open('GET', request_url, true);
-        // request.setRequestHeader("x-api-key", "GxAraSiB0W8gfQc7mVwal9nAyqegeIFG7pwFoRAT");
-        request.responseType = 'json';
+      //   // リクエストオブジェクトの作成
+      //   var request = new XMLHttpRequest();
+      //   request.open('GET', request_url, true);
+      //   // request.setRequestHeader("x-api-key", "GxAraSiB0W8gfQc7mVwal9nAyqegeIFG7pwFoRAT");
+      //   request.responseType = 'json';
 
-        // リクエストが成功したときに呼ばれる関数
-        request.onload = function () {
-          var json_data = this.response;
-          var return_message = JSON.parse(json_data["body"]);
-          // 結果をhtmlに表示する
-          let output_label = document.getElementById("output_label");
-          output_label.innerText = return_message
-        };
+      //   // リクエストが成功したときに呼ばれる関数
+      //   request.onload = function () {
+      //     var json_data = this.response;
+      //     var return_message = JSON.parse(json_data["body"]);
+      //     // 結果をhtmlに表示する
+      //     let output_label = document.getElementById("output_label");
+      //     output_label.innerText = return_message
+      //   };
 
-        request.send(); // URLリクエストを送信する
+      //   request.send(); // URLリクエストを送信する
+
+        fetch("https://3fendtwomj.execute-api.ap-northeast-1.amazonaws.com/prod/testappapi?param1=", { mode: "cors" })
+        .then(response => response.json())
+        .then(data => {
+        console.log(data);
+        let output_label = document.getElementById("output_label");
+        output_label.innerText = data["body"][0]["destination"]
+        });
       }
     </script>
 </body>
